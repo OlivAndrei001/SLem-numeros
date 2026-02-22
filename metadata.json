@@ -1,0 +1,8 @@
+{
+  "name": "SãoLeo em Números",
+  "description": "Hub independente de inteligência, dados e notícias sobre São Leopoldo, RS. Monitoramento cidadão e transparência através de dados compilados.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
