@@ -124,11 +124,13 @@ const Footer: React.FC<{ config: GlobalConfig | null }> = ({ config }) => {
             <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-md">
               Curadoria de dados e notícias de São Leopoldo. Informação clara para o cidadão consciente. Projeto independente focado em transparência.
             </p>
+            {/* 
             <div className="flex space-x-3">
               <a href="#" className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center hover:bg-slate-900 hover:text-white transition-all"><Facebook size={18} /></a>
               <a href="#" className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center hover:bg-slate-900 hover:text-white transition-all"><Instagram size={18} /></a>
               <a href="#" className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center hover:bg-slate-900 hover:text-white transition-all"><Youtube size={18} /></a>
             </div>
+            */}
           </div>
 
           <div className="md:text-right flex flex-col md:items-end">
