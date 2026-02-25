@@ -34,7 +34,7 @@ const AdminNews: React.FC = () => {
   });
 
   const [statForm, setStatForm] = useState<Omit<CityIndicator, 'id'>>({
-    label: '', value: '', suffix: '', trend: 'up', category: 'Demografia', color: 'blue', description: '', projects: []
+    label: '', value: '', suffix: '', trend: 'up', category: Category.EDUCATION, color: 'blue', description: '', projects: []
   });
 
   // Verifica se o usuário já está logado ao carregar a página
@@ -123,7 +123,7 @@ const AdminNews: React.FC = () => {
       await saveStat(newStat);
       const updated = await fetchStats();
       setStatsList(updated);
-      setStatForm({ label: '', value: '', suffix: '', trend: 'up', category: 'Demografia', color: 'blue', description: '', projects: [] });
+      setStatForm({ label: '', value: '', suffix: '', trend: 'up', category: Category.EDUCATION, color: 'blue', description: '', projects: [] });
       showStatus('Indicador sincronizado!');
     } catch (err) {
       showStatus('Erro ao salvar indicador', 'error');
@@ -356,7 +356,9 @@ const AdminNews: React.FC = () => {
                   </div>
                   <div className="space-y-1">
                     <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Categoria</label>
-                    <input placeholder="Ex: Economia" required className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 outline-none text-sm font-semibold" value={statForm.category} onChange={e => setStatForm({...statForm, category: e.target.value})} />
+                    <select className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-100 outline-none text-sm font-semibold capitalize" value={statForm.category} onChange={e => setStatForm({...statForm, category: e.target.value})}>
+                      {Object.values(Category).map(cat => <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>)}
+                    </select>
                   </div>
                   <button type="submit" disabled={isSaving} className="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-slate-900/10 hover:bg-[#004a99] transition-all">
                     {isSaving ? <Loader2 className="animate-spin mx-auto" /> : "Sincronizar na Tabela Stats"}

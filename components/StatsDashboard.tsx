@@ -1,14 +1,21 @@
 
 import React, { useState } from 'react';
 import { TrendingUp, TrendingDown, Minus, Info, X, ChevronRight, LayoutList } from 'lucide-react';
-import { CityIndicator } from '../types';
+import { CityIndicator, NewsArticle } from '../types';
+import { formatImageUrl } from '../utils/format';
+import { Link } from 'react-router-dom';
 
 interface StatsDashboardProps {
   indicators: CityIndicator[];
+  allNews?: NewsArticle[];
 }
 
-export const StatsDashboard: React.FC<StatsDashboardProps> = ({ indicators }) => {
+export const StatsDashboard: React.FC<StatsDashboardProps> = ({ indicators, allNews = [] }) => {
   const [selectedStat, setSelectedStat] = useState<CityIndicator | null>(null);
+
+  const getRelatedNews = (category: string) => {
+    return allNews.filter(n => n.category.toLowerCase() === category.toLowerCase()).slice(0, 3);
+  };
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
@@ -22,34 +29,40 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({ indicators }) =>
         </div>
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {indicators.map((stat) => (
-          <button 
-            key={stat.id} 
-            onClick={() => setSelectedStat(stat)}
-            className="text-left bg-white p-7 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group relative"
-          >
-            <div className="flex justify-between items-start mb-6">
-              <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 border-b-2 border-slate-50 pb-1">{stat.category}</span>
-              <div className={`p-2 rounded-xl transition-colors ${
-                stat.trend === 'up' ? 'bg-emerald-50 text-[#2d8b44]' : 
-                stat.trend === 'down' ? 'bg-rose-50 text-[#d9262e]' : 'bg-blue-50 text-[#004a99]'
-              }`}>
-                {stat.trend === 'up' ? <TrendingUp size={18} /> : 
-                 stat.trend === 'down' ? <TrendingDown size={18} /> : <Minus size={18} />}
+      {indicators.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {indicators.map((stat) => (
+            <button 
+              key={stat.id} 
+              onClick={() => setSelectedStat(stat)}
+              className="text-left bg-white p-7 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group relative"
+            >
+              <div className="flex justify-between items-start mb-6">
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 border-b-2 border-slate-50 pb-1">{stat.category}</span>
+                <div className={`p-2 rounded-xl transition-colors ${
+                  stat.trend === 'up' ? 'bg-emerald-50 text-[#2d8b44]' : 
+                  stat.trend === 'down' ? 'bg-rose-50 text-[#d9262e]' : 'bg-blue-50 text-[#004a99]'
+                }`}>
+                  {stat.trend === 'up' ? <TrendingUp size={18} /> : 
+                   stat.trend === 'down' ? <TrendingDown size={18} /> : <Minus size={18} />}
+                </div>
               </div>
-            </div>
-            <div className="flex items-baseline space-x-2">
-              <span className="text-5xl font-black text-slate-950 tracking-tighter group-hover:text-[#004a99] transition-colors">{stat.value}</span>
-              <span className="text-xs font-black text-slate-400 uppercase tracking-widest">{stat.suffix}</span>
-            </div>
-            <h4 className="text-slate-700 font-bold mt-3 text-sm leading-tight flex items-center justify-between">
-              {stat.label}
-              <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all text-[#004a99]" />
-            </h4>
-          </button>
-        ))}
-      </div>
+              <div className="flex items-baseline space-x-2">
+                <span className="text-5xl font-black text-slate-950 tracking-tighter group-hover:text-[#004a99] transition-colors">{stat.value}</span>
+                <span className="text-xs font-black text-slate-400 uppercase tracking-widest">{stat.suffix}</span>
+              </div>
+              <h4 className="text-slate-700 font-bold mt-3 text-sm leading-tight flex items-center justify-between">
+                {stat.label}
+                <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all text-[#004a99]" />
+              </h4>
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className="bg-slate-50 rounded-[2rem] p-12 text-center border-2 border-dashed border-slate-200">
+          <p className="text-slate-400 text-xs font-black uppercase tracking-[0.3em]">Nenhum indicador cadastrado no painel administrativo.</p>
+        </div>
+      )}
 
       {/* Modal de Detalhes */}
       {selectedStat && (
@@ -85,6 +98,34 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({ indicators }) =>
                   </p>
                 </section>
               )}
+
+              <section>
+                <div className="flex items-center justify-between mb-6">
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Notícias Relacionadas</h4>
+                  <ChevronRight size={14} className="text-slate-300" />
+                </div>
+                <div className="space-y-3">
+                  {getRelatedNews(selectedStat.category).length > 0 ? (
+                    getRelatedNews(selectedStat.category).map(news => (
+                      <Link 
+                        key={news.id} 
+                        to={`/noticias/${news.id}`}
+                        className="flex items-center space-x-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-blue-200 transition-all group"
+                      >
+                        <div className="w-16 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                          <img src={formatImageUrl(news.imageurl)} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h5 className="text-xs font-bold text-slate-900 line-clamp-1 group-hover:text-[#004a99] transition-colors">{news.title}</h5>
+                          <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">{new Date(news.date).toLocaleDateString('pt-BR')}</p>
+                        </div>
+                      </Link>
+                    ))
+                  ) : (
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center py-4 bg-slate-50 rounded-2xl border border-dashed border-slate-200">Nenhuma notícia recente nesta categoria.</p>
+                  )}
+                </div>
+              </section>
 
               <section>
                 <div className="flex items-center justify-between mb-6">

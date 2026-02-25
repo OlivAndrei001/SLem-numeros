@@ -9,6 +9,7 @@ const NewsList = lazy(() => import('./pages/NewsList'));
 const About = lazy(() => import('./pages/About'));
 const Contact = lazy(() => import('./pages/Contact'));
 const AdminNews = lazy(() => import('./pages/AdminNews'));
+const NewsDetail = lazy(() => import('./pages/NewsDetail'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const LoadingFallback = () => (
@@ -27,6 +28,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Layout><Home /></Layout>} />
           <Route path="/noticias" element={<Layout><NewsList /></Layout>} />
+          <Route path="/noticias/:newsId" element={<Layout><NewsDetail /></Layout>} />
           <Route path="/sobre" element={<Layout><About /></Layout>} />
           <Route path="/contato" element={<Layout><Contact /></Layout>} />
           <Route path="/admin" element={<AdminNews />} />
