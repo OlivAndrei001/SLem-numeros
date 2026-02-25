@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, User, ArrowRight } from 'lucide-react';
 import { NewsArticle } from '../types';
+import { formatImageUrl } from '../utils/format';
 
 interface NewsCardProps {
   news: NewsArticle;
@@ -16,7 +17,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news, featured = false }) =>
         <div className="grid md:grid-cols-2">
           <div className="aspect-video md:aspect-auto h-full overflow-hidden">
             <img 
-              src={news.imageurl} 
+              src={formatImageUrl(news.imageurl)} 
               alt={news.title}
               className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
@@ -51,7 +52,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news, featured = false }) =>
     <div className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100">
       <div className="aspect-[4/3] overflow-hidden">
         <img 
-          src={news.imageurl} 
+          src={formatImageUrl(news.imageurl)} 
           alt={news.title}
           className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
         />

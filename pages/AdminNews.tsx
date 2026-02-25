@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Category, NewsArticle, CityIndicator, BannerConfig, GlobalConfig, CityProject } from '../types';
+import { formatImageUrl } from '../utils/format';
 import { 
   fetchNews, saveNews, deleteNews, 
   fetchStats, saveStat, deleteStat, 
@@ -294,7 +295,7 @@ const AdminNews: React.FC = () => {
                   <div key={item.id} className="p-6 flex items-center justify-between hover:bg-slate-50 transition-colors">
                     <div className="flex items-center space-x-5">
                       <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-sm border border-white">
-                        <img src={item.imageurl} className="w-full h-full object-cover" />
+                        <img src={formatImageUrl(item.imageurl)} className="w-full h-full object-cover" />
                       </div>
                       <div>
                         <h4 className="font-bold text-slate-800 text-sm line-clamp-1">{item.title}</h4>

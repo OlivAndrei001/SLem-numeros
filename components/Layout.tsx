@@ -4,17 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Facebook, Instagram, Youtube, Mail, Globe } from 'lucide-react';
 import { fetchGlobalConfig } from '../services/news-storage';
 import { GlobalConfig } from '../types';
-
-const formatImageUrl = (url: string) => {
-  if (!url) return '';
-  if (url.includes('drive.google.com')) {
-    const idMatch = url.match(/\/d\/(.+?)(\/|$|#|\?)/) || url.match(/id=(.+?)(&|$|#)/);
-    if (idMatch && idMatch[1]) {
-      return `https://lh3.googleusercontent.com/u/0/d/${idMatch[1]}=w1000`;
-    }
-  }
-  return url;
-};
+import { formatImageUrl } from '../utils/format';
 
 const Logo: React.FC<{ className?: string, config: GlobalConfig | null }> = ({ className, config }) => {
   const [src, setSrc] = useState(config ? formatImageUrl(config.logourl) : '');
