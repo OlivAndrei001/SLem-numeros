@@ -28,18 +28,18 @@ const SectorCounter: React.FC<{ sector: TaxSector }> = ({ sector }) => {
   const activeColor = colorClasses[sector.color] || colorClasses.blue;
 
   return (
-    <div className={`p-6 rounded-[2rem] border bg-white shadow-sm hover:shadow-md transition-all group`}>
-      <div className="flex justify-between items-start mb-4">
-        <span className={`text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full border ${activeColor}`}>
+    <div className={`p-5 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] border bg-white shadow-sm hover:shadow-md transition-all group`}>
+      <div className="flex justify-between items-start mb-3 sm:mb-4">
+        <span className={`text-[8px] sm:text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full border ${activeColor}`}>
           {sector.name}
         </span>
         <TrendingUp size={14} className="text-slate-300 group-hover:text-blue-500 transition-colors" />
       </div>
       <div className="space-y-1">
-        <p className="text-xl sm:text-2xl font-black text-slate-900 tracking-tighter font-mono break-all">
+        <p className="text-lg sm:text-2xl font-black text-slate-900 tracking-tighter font-mono break-all">
           {formattedValue}
         </p>
-        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Valor Real Arrecadado</p>
+        <p className="text-[8px] sm:text-[9px] font-bold text-slate-400 uppercase tracking-widest">Valor Real Arrecadado</p>
       </div>
     </div>
   );
@@ -60,35 +60,35 @@ export const TaxMeter: React.FC<TaxMeterProps> = ({ config }) => {
   }, [totalValue]);
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-      <div className="bg-slate-950 rounded-[3rem] p-8 md:p-12 shadow-2xl relative overflow-hidden">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 sm:mb-16">
+      <div className="bg-slate-950 rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-8 md:p-12 shadow-2xl relative overflow-hidden">
         {/* Background Decor */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-600/5 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2"></div>
 
         <div className="relative z-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 sm:gap-8 mb-8 sm:mb-12">
             <div className="max-w-xl">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="p-2 bg-blue-500/20 rounded-xl">
-                  <Coins className="text-blue-400" size={20} />
+                  <Coins className="text-blue-400" size={18} />
                 </div>
-                <span className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em]">Dados Oficiais da Transparência</span>
+                <span className="text-[9px] sm:text-[10px] font-black text-blue-400 uppercase tracking-[0.3em]">Dados Oficiais da Transparência</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter uppercase leading-none mb-4">
+              <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter uppercase leading-none mb-3 sm:mb-4">
                 {config.title}
               </h2>
-              <p className="text-slate-400 text-sm font-medium leading-relaxed">
+              <p className="text-slate-400 text-xs sm:text-sm font-medium leading-relaxed">
                 {config.description}
               </p>
             </div>
             
-            <div className="bg-white/5 backdrop-blur-md border border-white/10 p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] w-full md:min-w-[300px]">
-              <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2">Total Arrecadado (Real)</p>
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 p-6 sm:p-8 rounded-[1.5rem] sm:rounded-[2.5rem] w-full md:min-w-[300px]">
+              <p className="text-[9px] sm:text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2">Total Arrecadado (Real)</p>
               <p className="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter font-mono break-all">
                 {formattedTotal}
               </p>
-              <div className="mt-4 flex items-center text-[9px] font-bold text-slate-500 uppercase tracking-tighter">
+              <div className="mt-3 sm:mt-4 flex items-center text-[8px] sm:text-[9px] font-bold text-slate-500 uppercase tracking-tighter">
                 <Info size={12} className="mr-1 text-emerald-500" /> Atualizado em: {config.lastUpdate}
               </div>
             </div>

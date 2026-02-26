@@ -51,7 +51,7 @@ const Navbar: React.FC<{ config: GlobalConfig | null }> = ({ config }) => {
             <Link to="/" className="flex items-center space-x-3 group">
               <Logo className="h-10 w-auto transition-transform group-hover:scale-110" config={config} />
               <div className="flex flex-col">
-                <h1 className="text-slate-900 font-black text-lg leading-none tracking-tighter uppercase">
+                <h1 className="text-slate-900 font-black text-base sm:text-lg leading-none tracking-tighter uppercase">
                   {config?.cityname || 'SÃO LÉO'} <span className="text-[#004a99]">{config?.cityslogan || 'EM NÚMEROS'}</span>
                 </h1>
                 <p className="text-slate-400 text-[9px] font-black uppercase tracking-[0.3em]">Portal de Dados Independente</p>
@@ -82,13 +82,15 @@ const Navbar: React.FC<{ config: GlobalConfig | null }> = ({ config }) => {
       </div>
 
       {isOpen && (
-        <div className="md:hidden bg-white border-t border-slate-100 p-6 space-y-4">
+        <div className="md:hidden bg-white border-t border-slate-100 p-8 space-y-6 animate-in slide-in-from-top duration-300">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               to={link.path}
               onClick={() => setIsOpen(false)}
-              className="block text-sm font-black uppercase tracking-widest text-slate-600"
+              className={`block text-lg font-black uppercase tracking-widest ${
+                isActive(link.path) ? 'text-[#004a99]' : 'text-slate-600'
+              }`}
             >
               {link.name}
             </Link>
@@ -103,34 +105,27 @@ const Footer: React.FC<{ config: GlobalConfig | null }> = ({ config }) => {
   return (
     <footer className="bg-white text-slate-900 pt-24 pb-12 border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-20">
-          <div className="space-y-6">
-            <Link to="/" className="flex items-center space-x-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 mb-16 md:mb-20">
+          <div className="space-y-6 text-center md:text-left">
+            <Link to="/" className="flex items-center justify-center md:justify-start space-x-3">
               <Logo className="h-10 w-auto" config={config} />
               <h2 className="font-black text-xl tracking-tighter uppercase">
                 {config?.cityname || 'SÃO LÉO'} <span className="text-[#004a99]">{config?.cityslogan || 'EM NÚMEROS'}</span>
               </h2>
             </Link>
-            <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-md">
+            <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-md mx-auto md:mx-0">
               Curadoria de dados e notícias de São Leopoldo. Informação clara para o cidadão consciente. Projeto independente focado em transparência.
             </p>
-            {/* 
-            <div className="flex space-x-3">
-              <a href="#" className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center hover:bg-slate-900 hover:text-white transition-all"><Facebook size={18} /></a>
-              <a href="#" className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center hover:bg-slate-900 hover:text-white transition-all"><Instagram size={18} /></a>
-              <a href="#" className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center hover:bg-slate-900 hover:text-white transition-all"><Youtube size={18} /></a>
-            </div>
-            */}
           </div>
 
-          <div className="md:text-right flex flex-col md:items-end">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-8">Informações de Contato</h3>
-            <ul className="space-y-4 text-sm font-medium text-slate-600">
-              <li className="flex items-center md:justify-end space-x-3">
+          <div className="text-center md:text-right flex flex-col items-center md:items-end">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-6 md:mb-8">Informações de Contato</h3>
+            <ul className="space-y-4 text-sm font-medium text-slate-600 w-full">
+              <li className="flex items-center justify-center md:justify-end space-x-3">
                 <Mail size={16} className="text-[#004a99]" />
-                <span>contato@saoleoemnumeros.com.br</span>
+                <span className="break-all">contato@saoleoemnumeros.com.br</span>
               </li>
-              <li className="flex items-center md:justify-end space-x-3">
+              <li className="flex items-center justify-center md:justify-end space-x-3">
                 <Globe size={16} className="text-[#2d8b44]" />
                 <span>www.saoleoemnumeros.com.br</span>
               </li>

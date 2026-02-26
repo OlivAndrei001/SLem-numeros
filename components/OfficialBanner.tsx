@@ -9,24 +9,24 @@ interface OfficialBannerProps {
 
 export const OfficialBanner: React.FC<OfficialBannerProps> = ({ config }) => {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-      <div className="bg-slate-900 rounded-[3rem] p-12 md:p-16 relative overflow-hidden shadow-2xl group border border-slate-800">
-        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
-          <div className="max-w-2xl space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 sm:mb-16">
+      <div className="bg-slate-900 rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 md:p-16 relative overflow-hidden shadow-2xl group border border-slate-800">
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 sm:gap-12">
+          <div className="max-w-2xl space-y-5 sm:space-y-6">
             <div className="inline-flex items-center space-x-3 bg-white/5 px-4 py-2 rounded-full border border-white/10">
-              <BarChart3 size={16} className="text-blue-400" />
-              <span className="text-[9px] font-black text-white uppercase tracking-[0.3em]">Insight em Destaque</span>
+              <BarChart3 size={14} className="text-blue-400" />
+              <span className="text-[8px] sm:text-[9px] font-black text-white uppercase tracking-[0.3em]">Insight em Destaque</span>
             </div>
-            <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-[1.1] tracking-tighter">
+            <h3 className="text-2xl sm:text-4xl md:text-5xl font-black text-white leading-[1.1] tracking-tighter">
               {config.title} <span className="text-blue-400">{config.highlight}</span>
             </h3>
-            <p className="text-slate-400 text-lg font-medium leading-relaxed">
+            <p className="text-slate-400 text-base sm:text-lg font-medium leading-relaxed">
               {config.description}
             </p>
-            <div className="pt-4">
+            <div className="pt-2 sm:pt-4">
               <a 
                 href={config.link} 
-                className="inline-flex items-center bg-white text-slate-900 px-10 py-4 rounded-2xl font-black hover:bg-blue-600 hover:text-white transition-all group shadow-xl text-xs uppercase tracking-widest"
+                className="inline-flex items-center justify-center w-full sm:w-auto bg-white text-slate-900 px-10 py-4 rounded-xl sm:rounded-2xl font-black hover:bg-blue-600 hover:text-white transition-all group shadow-xl text-[10px] sm:text-xs uppercase tracking-widest"
               >
                 {config.buttontext} <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
               </a>

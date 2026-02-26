@@ -44,26 +44,26 @@ const NewsList: React.FC = () => {
   }
 
   return (
-    <div className="py-12 bg-slate-50 min-h-screen">
+    <div className="py-8 sm:py-12 bg-slate-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 sm:mb-12 gap-6">
           <div>
-            <h1 className="text-4xl font-extrabold text-slate-900 mb-4">Portal de Notícias</h1>
-            <p className="text-slate-600 max-w-2xl">Mantenha-se informado sobre as últimas decisões e eventos da Prefeitura de São Leopoldo.</p>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-3 sm:mb-4">Portal de Notícias</h1>
+            <p className="text-sm sm:text-base text-slate-600 max-w-2xl">Mantenha-se informado sobre as últimas decisões e eventos da Prefeitura de São Leopoldo.</p>
           </div>
-          <Link to="/admin" className="flex items-center space-x-2 text-slate-400 hover:text-[#004a99] transition-colors text-sm font-medium">
+          <Link to="/admin" className="flex items-center space-x-2 text-slate-400 hover:text-[#004a99] transition-colors text-xs sm:text-sm font-medium">
             <Settings size={16} />
             <span>Acesso Editor</span>
           </Link>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-12 flex flex-col md:flex-row gap-6 items-center">
+        <div className="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 mb-10 sm:mb-12 flex flex-col md:flex-row gap-4 sm:gap-6 items-center">
           <div className="relative flex-1 w-full">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
             <input 
               type="text" 
               placeholder="Buscar por palavras-chave..."
-              className="w-full pl-12 pr-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-blue-500 transition-all outline-none"
+              className="w-full pl-11 pr-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-blue-500 transition-all outline-none text-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />

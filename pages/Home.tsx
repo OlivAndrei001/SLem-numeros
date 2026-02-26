@@ -62,12 +62,12 @@ const Home: React.FC = () => {
 
       <StatsDashboard indicators={stats} allNews={news} />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-slate-50">
-        <div className="grid lg:grid-cols-3 gap-16">
-          <div className="lg:col-span-2 space-y-16">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 border-t border-slate-50">
+        <div className="grid lg:grid-cols-3 gap-12 lg:gap-16">
+          <div className="lg:col-span-2 space-y-12 md:space-y-16">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-6 md:pb-8">
               <div>
-                <h2 className="text-4xl font-black text-slate-900 tracking-tighter uppercase leading-none">Destaque Editorial</h2>
+                <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tighter uppercase leading-none">Destaque Editorial</h2>
                 <span className="text-[10px] font-black text-blue-600 uppercase tracking-[0.3em] mt-3 block">Curadoria São Léo em Números</span>
               </div>
               <Link to="/noticias" className="hidden sm:flex items-center space-x-2 text-xs font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-colors">
@@ -105,17 +105,17 @@ const Home: React.FC = () => {
         </div>
       </div>
       
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32">
-        <div className="bg-[#004a99] rounded-[4rem] p-12 md:p-24 relative overflow-hidden shadow-2xl group">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 md:pb-32">
+        <div className="bg-[#004a99] rounded-[2.5rem] sm:rounded-[4rem] p-8 sm:p-12 md:p-24 relative overflow-hidden shadow-2xl group">
           <div className="relative z-10 max-w-2xl">
-            <h3 className="text-5xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter mb-10">
+            <h3 className="text-3xl sm:text-5xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter mb-8 sm:mb-10">
               Acompanhe a cidade através de dados.
             </h3>
-            <p className="text-blue-100 text-xl font-medium leading-relaxed mb-12 opacity-80">
+            <p className="text-blue-100 text-lg sm:text-xl font-medium leading-relaxed mb-10 sm:mb-12 opacity-80">
               Monitoramento independente de investimentos, obras e indicadores sociais de São Leopoldo.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/noticias" className="bg-white text-slate-900 px-10 py-5 rounded-3xl font-black uppercase tracking-widest text-xs hover:scale-105 transition-transform">
+              <Link to="/noticias" className="w-full sm:w-auto text-center bg-white text-slate-900 px-10 py-5 rounded-2xl sm:rounded-3xl font-black uppercase tracking-widest text-xs hover:scale-105 transition-transform">
                 Explorar Notícias
               </Link>
             </div>
