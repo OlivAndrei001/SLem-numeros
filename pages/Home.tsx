@@ -1,10 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { NewsArticle, CityIndicator, BannerConfig } from '../types';
-import { fetchNews, fetchStats, fetchBannerConfig } from '../services/news-storage';
+import { NewsArticle, CityIndicator, BannerConfig, TaxConfig } from '../types';
+import { fetchNews, fetchStats, fetchBannerConfig, fetchTaxConfig } from '../services/news-storage';
 import { NewsCard } from '../components/NewsCard';
 import { OfficialBanner } from '../components/OfficialBanner';
 import { StatsDashboard } from '../components/StatsDashboard';
+import { TaxMeter } from '../components/TaxMeter';
 import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -12,19 +13,22 @@ const Home: React.FC = () => {
   const [news, setNews] = useState<NewsArticle[]>([]);
   const [stats, setStats] = useState<CityIndicator[]>([]);
   const [banner, setBanner] = useState<BannerConfig | null>(null);
+  const [taxConfig, setTaxConfig] = useState<TaxConfig | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [newsData, statsData, bannerData] = await Promise.all([
+        const [newsData, statsData, bannerData, taxData] = await Promise.all([
           fetchNews(),
           fetchStats(),
-          fetchBannerConfig()
+          fetchBannerConfig(),
+          fetchTaxConfig()
         ]);
         setNews(newsData);
         setStats(statsData);
         setBanner(bannerData);
+        setTaxConfig(taxData);
       } catch (err) {
         console.error("Erro ao carregar dados do Supabase:", err);
       } finally {
@@ -53,6 +57,8 @@ const Home: React.FC = () => {
       <div className="pt-12 pb-8">
         {banner && <OfficialBanner config={banner} />}
       </div>
+
+      {taxConfig && <TaxMeter config={taxConfig} />}
 
       <StatsDashboard indicators={stats} allNews={news} />
 

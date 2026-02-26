@@ -1,29 +1,31 @@
 
 import React, { useState, useEffect } from 'react';
-import { Category, NewsArticle, CityIndicator, BannerConfig, GlobalConfig, CityProject } from '../types';
+import { Category, NewsArticle, CityIndicator, BannerConfig, GlobalConfig, CityProject, TaxConfig } from '../types';
 import { formatImageUrl } from '../utils/format';
 import { 
   fetchNews, saveNews, deleteNews, 
   fetchStats, saveStat, deleteStat, 
   fetchBannerConfig, saveBannerConfig,
-  fetchGlobalConfig, saveGlobalConfig
+  fetchGlobalConfig, saveGlobalConfig,
+  fetchTaxConfig, saveTaxConfig
 } from '../services/news-storage';
 import { supabase } from '../services/supabase';
 import { 
   Plus, Trash2, FileText, CheckCircle2, 
-  AlertCircle, BarChart3, Settings, Save, Layout as LayoutIcon, LogOut, Palette, Loader2, User, Lock, Mail
+  AlertCircle, BarChart3, Settings, Save, Layout as LayoutIcon, LogOut, Palette, Loader2, User, Lock, Mail, Coins
 } from 'lucide-react';
 
 const AdminNews: React.FC = () => {
   const [session, setSession] = useState<any>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [activeTab, setActiveTab] = useState<'noticias' | 'numeros' | 'banner' | 'identidade'>('noticias');
+  const [activeTab, setActiveTab] = useState<'noticias' | 'numeros' | 'banner' | 'identidade' | 'impostometro'>('noticias');
   
   const [newsList, setNewsList] = useState<NewsArticle[]>([]);
   const [statsList, setStatsList] = useState<CityIndicator[]>([]);
   const [bannerForm, setBannerForm] = useState<BannerConfig | null>(null);
   const [globalForm, setGlobalForm] = useState<GlobalConfig | null>(null);
+  const [taxForm, setTaxForm] = useState<TaxConfig | null>(null);
   const [status, setStatus] = useState<{ type: 'success' | 'error', msg: string } | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -54,16 +56,18 @@ const AdminNews: React.FC = () => {
   useEffect(() => {
     const loadAllData = async () => {
       try {
-        const [n, s, b, g] = await Promise.all([
+        const [n, s, b, g, t] = await Promise.all([
           fetchNews(),
           fetchStats(),
           fetchBannerConfig(),
-          fetchGlobalConfig()
+          fetchGlobalConfig(),
+          fetchTaxConfig()
         ]);
         setNewsList(n);
         setStatsList(s);
         setBannerForm(b);
         setGlobalForm(g);
+        setTaxForm(t);
       } catch (err) {
         console.error("Erro ao carregar dados:", err);
       }
@@ -160,6 +164,20 @@ const AdminNews: React.FC = () => {
     }
   };
 
+  const handleUpdateTax = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!taxForm) return;
+    setIsSaving(true);
+    try {
+      await saveTaxConfig(taxForm);
+      showStatus('Impostômetro atualizado!');
+    } catch (err) {
+      showStatus('Erro ao salvar impostômetro', 'error');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   if (!session) {
     return (
       <div className="min-h-screen bg-[#004a99] flex items-center justify-center p-6 relative overflow-hidden">
@@ -231,6 +249,7 @@ const AdminNews: React.FC = () => {
             </div>
             <button onClick={() => setActiveTab('noticias')} className={`px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'noticias' ? 'bg-[#004a99] text-white shadow-lg shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-50'}`}>Notícias</button>
             <button onClick={() => setActiveTab('numeros')} className={`px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'numeros' ? 'bg-[#004a99] text-white shadow-lg shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-50'}`}>Números</button>
+            <button onClick={() => setActiveTab('impostometro')} className={`px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'impostometro' ? 'bg-[#004a99] text-white shadow-lg shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-50'}`}>Impostômetro</button>
             <button onClick={() => setActiveTab('banner')} className={`px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'banner' ? 'bg-[#004a99] text-white shadow-lg shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-50'}`}>Banner</button>
             <button onClick={() => setActiveTab('identidade')} className={`px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'identidade' ? 'bg-[#004a99] text-white shadow-lg shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-50'}`}>ID Visual</button>
             <button onClick={handleLogout} className="ml-4 p-3 bg-rose-50 text-rose-500 rounded-xl hover:bg-rose-500 hover:text-white transition-all"><LogOut size={18} /></button>
@@ -441,6 +460,67 @@ const AdminNews: React.FC = () => {
               </div>
               <button disabled={isSaving} className="w-full bg-slate-900 text-white py-6 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] shadow-2xl shadow-slate-900/10 hover:bg-[#004a99] transition-all">
                 {isSaving ? <Loader2 className="animate-spin mx-auto" /> : "Salvar Alterações de Marca"}
+              </button>
+            </form>
+          </div>
+        )}
+
+        {activeTab === 'impostometro' && taxForm && (
+          <div className="max-w-4xl mx-auto">
+            <form onSubmit={handleUpdateTax} className="bg-white p-12 rounded-[3.5rem] border shadow-sm space-y-10">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-2xl font-black uppercase tracking-tighter">Configuração do Impostômetro</h3>
+                  <p className="text-xs font-bold text-slate-400 mt-2">Defina as médias diárias para o cálculo em tempo real.</p>
+                </div>
+                <Coins className="text-blue-600" size={32} />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="space-y-1">
+                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Título da Seção</label>
+                  <input className="w-full px-6 py-4 rounded-2xl border bg-slate-50 font-semibold" value={taxForm.title} onChange={e => setTaxForm({...taxForm, title: e.target.value})} />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Descrição</label>
+                  <input className="w-full px-6 py-4 rounded-2xl border bg-slate-50 font-semibold" value={taxForm.description} onChange={e => setTaxForm({...taxForm, description: e.target.value})} />
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 border-b pb-2">Setores de Arrecadação</h4>
+                {taxForm.sectors.map((sector, index) => (
+                  <div key={sector.id} className="p-6 bg-slate-50 rounded-3xl border border-slate-100 grid md:grid-cols-3 gap-6 items-end">
+                    <div className="space-y-1">
+                      <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Nome do Setor</label>
+                      <input className="w-full px-4 py-3 rounded-xl border bg-white font-bold text-sm" value={sector.name} onChange={e => {
+                        const newSectors = [...taxForm.sectors];
+                        newSectors[index].name = e.target.value;
+                        setTaxForm({...taxForm, sectors: newSectors});
+                      }} />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Média Diária (R$)</label>
+                      <input type="number" className="w-full px-4 py-3 rounded-xl border bg-white font-bold text-sm" value={sector.dailyAverage} onChange={e => {
+                        const newSectors = [...taxForm.sectors];
+                        newSectors[index].dailyAverage = Number(e.target.value);
+                        setTaxForm({...taxForm, sectors: newSectors});
+                      }} />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Valor Base (R$)</label>
+                      <input type="number" className="w-full px-4 py-3 rounded-xl border bg-white font-bold text-sm" value={sector.baseValue} onChange={e => {
+                        const newSectors = [...taxForm.sectors];
+                        newSectors[index].baseValue = Number(e.target.value);
+                        setTaxForm({...taxForm, sectors: newSectors});
+                      }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <button disabled={isSaving} className="w-full bg-slate-900 text-white py-6 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] shadow-2xl shadow-slate-900/10 hover:bg-[#004a99] transition-all">
+                {isSaving ? <Loader2 className="animate-spin mx-auto" /> : "Salvar Configurações do Impostômetro"}
               </button>
             </form>
           </div>

@@ -1,9 +1,19 @@
 
-import { NewsArticle, CityIndicator, BannerConfig, GlobalConfig } from '../types';
+import { Category, NewsArticle, CityIndicator, BannerConfig, GlobalConfig, TaxConfig } from '../types';
 import { supabase } from './supabase';
 import { MOCK_NEWS } from '../constants';
 
 // Valores padrão para o caso de o banco estar vazio
+const DEFAULT_TAX_CONFIG: TaxConfig = {
+  title: 'Impostômetro São Leopoldo',
+  description: 'Estimativa de arrecadação municipal em tempo real baseada em médias diárias oficiais.',
+  sectors: [
+    { id: '1', name: 'ISS (Serviços)', dailyAverage: 450000, baseValue: 120000000, color: 'blue' },
+    { id: '2', name: 'IPTU (Propriedade)', dailyAverage: 280000, baseValue: 85000000, color: 'emerald' },
+    { id: '3', name: 'ICMS (Repasse RS)', dailyAverage: 650000, baseValue: 180000000, color: 'amber' },
+    { id: '4', name: 'FPM (Repasse União)', dailyAverage: 520000, baseValue: 145000000, color: 'indigo' }
+  ]
+};
 const DEFAULT_BANNER: BannerConfig = {
   title: 'São Leopoldo Avança:',
   highlight: 'Novo Plano Diretor 2026',
@@ -42,6 +52,29 @@ export const deleteNews = async (id: string) => {
   if (error) throw error;
 };
 
+const DEFAULT_STATS: CityIndicator[] = [
+  {
+    id: '1',
+    label: 'Vagas em Creches',
+    value: '4.500',
+    suffix: 'vagas',
+    trend: 'up',
+    category: Category.EDUCATION,
+    color: 'blue',
+    description: 'Total de novas vagas abertas na rede municipal de ensino infantil.'
+  },
+  {
+    id: '2',
+    label: 'Saúde da Família',
+    value: '92',
+    suffix: '%',
+    trend: 'up',
+    category: Category.HEALTH,
+    color: 'emerald',
+    description: 'Cobertura vacinal e atendimentos preventivos nas UBSs.'
+  }
+];
+
 // --- Indicadores ---
 export const fetchStats = async (): Promise<CityIndicator[]> => {
   const { data, error } = await supabase
@@ -49,7 +82,7 @@ export const fetchStats = async (): Promise<CityIndicator[]> => {
     .select('*')
     .order('id', { ascending: true });
   
-  if (error || !data) return [];
+  if (error || !data || data.length === 0) return DEFAULT_STATS;
   return data;
 };
 
@@ -96,5 +129,21 @@ export const fetchGlobalConfig = async (): Promise<GlobalConfig> => {
 
 export const saveGlobalConfig = async (config: GlobalConfig) => {
   const { error } = await supabase.from('config').upsert([{ id: 1, ...config }]);
+  if (error) throw error;
+};
+
+// --- Impostômetro ---
+export const fetchTaxConfig = async (): Promise<TaxConfig> => {
+  const { data, error } = await supabase
+    .from('tax_config')
+    .select('*')
+    .single();
+  
+  if (error || !data) return DEFAULT_TAX_CONFIG;
+  return data;
+};
+
+export const saveTaxConfig = async (config: TaxConfig) => {
+  const { error } = await supabase.from('tax_config').upsert([{ id: 1, ...config }]);
   if (error) throw error;
 };

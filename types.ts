@@ -61,3 +61,18 @@ export interface GlobalConfig {
   cityname: string;
   cityslogan: string;
 }
+
+export interface TaxSector {
+  id: string;
+  name: string;
+  dailyAverage: number; // Valor arrecadado por dia (estimado)
+  baseValue: number;    // Valor inicial (ex: arrecadado até agora no ano)
+  color: string;
+}
+
+export interface TaxConfig {
+  id?: number;
+  title: string;
+  description: string;
+  sectors: TaxSector[];
+}
