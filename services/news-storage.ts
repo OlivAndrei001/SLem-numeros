@@ -88,11 +88,18 @@ export const fetchStats = async (): Promise<CityIndicator[]> => {
 };
 
 export const saveStat = async (stat: CityIndicator) => {
-  // Remove id if it's a new entry to let Supabase generate UUID
-  const { id, ...statData } = stat;
-  const dataToSave = id.startsWith('temp-') ? statData : stat;
-  const { error } = await supabase.from('stats').upsert([dataToSave]);
-  if (error) throw error;
+  // Remove id and projects from dataToSave for new entries
+  const { id, projects, ...statData } = stat;
+  
+  if (id.startsWith('temp-')) {
+    // New entry: use insert and let Supabase handle the ID
+    const { error } = await supabase.from('stats').insert([statData]);
+    if (error) throw error;
+  } else {
+    // Existing entry: use upsert with the original ID
+    const { error } = await supabase.from('stats').upsert([{ id, ...statData }]);
+    if (error) throw error;
+  }
 };
 
 export const deleteStat = async (id: string) => {
