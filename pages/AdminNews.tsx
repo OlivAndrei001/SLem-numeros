@@ -476,7 +476,7 @@ const AdminNews: React.FC = () => {
                 <Coins className="text-blue-600" size={32} />
               </div>
 
-              <div className="grid md:grid-cols-2 gap-8">
+              <div className="grid md:grid-cols-3 gap-8">
                 <div className="space-y-1">
                   <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Título da Seção</label>
                   <input className="w-full px-6 py-4 rounded-2xl border bg-slate-50 font-semibold" value={taxForm.title} onChange={e => setTaxForm({...taxForm, title: e.target.value})} />
@@ -484,6 +484,10 @@ const AdminNews: React.FC = () => {
                 <div className="space-y-1">
                   <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Descrição</label>
                   <input className="w-full px-6 py-4 rounded-2xl border bg-slate-50 font-semibold" value={taxForm.description} onChange={e => setTaxForm({...taxForm, description: e.target.value})} />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Data da Última Atualização</label>
+                  <input className="w-full px-6 py-4 rounded-2xl border bg-slate-50 font-semibold" value={taxForm.lastUpdate} onChange={e => setTaxForm({...taxForm, lastUpdate: e.target.value})} />
                 </div>
               </div>
 

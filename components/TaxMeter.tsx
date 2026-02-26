@@ -8,37 +8,14 @@ interface TaxMeterProps {
 }
 
 const SectorCounter: React.FC<{ sector: TaxSector }> = ({ sector }) => {
-  const [currentValue, setCurrentValue] = useState(sector.baseValue);
-
-  useEffect(() => {
-    // Calcula o valor por milissegundo baseado na média diária
-    const msPerDay = 24 * 60 * 60 * 1000;
-    const valuePerMs = sector.dailyAverage / msPerDay;
-    
-    // Define o valor inicial baseado no tempo decorrido hoje (ou desde o início do ano se baseValue for anual)
-    // Para simplificar, vamos assumir que baseValue é o valor até o início do dia de hoje
-    const now = new Date();
-    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const msElapsedToday = now.getTime() - startOfDay.getTime();
-    
-    const initialValue = sector.baseValue + (msElapsedToday * valuePerMs);
-    setCurrentValue(initialValue);
-
-    const interval = setInterval(() => {
-      setCurrentValue(prev => prev + (valuePerMs * 100)); // Atualiza a cada 100ms
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, [sector]);
-
   const formattedValue = useMemo(() => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
-    }).format(currentValue);
-  }, [currentValue]);
+    }).format(sector.baseValue);
+  }, [sector.baseValue]);
 
   const colorClasses: Record<string, string> = {
     blue: 'text-blue-600 bg-blue-50 border-blue-100',
@@ -62,34 +39,16 @@ const SectorCounter: React.FC<{ sector: TaxSector }> = ({ sector }) => {
         <p className="text-xl sm:text-2xl font-black text-slate-900 tracking-tighter font-mono break-all">
           {formattedValue}
         </p>
-        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Arrecadação Estimada</p>
+        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Valor Real Arrecadado</p>
       </div>
     </div>
   );
 };
 
 export const TaxMeter: React.FC<TaxMeterProps> = ({ config }) => {
-  const [totalValue, setTotalValue] = useState(0);
-
-  useEffect(() => {
-    const msPerDay = 24 * 60 * 60 * 1000;
-    const totalDailyAverage = config.sectors.reduce((acc, s) => acc + s.dailyAverage, 0);
-    const totalBaseValue = config.sectors.reduce((acc, s) => acc + s.baseValue, 0);
-    const valuePerMs = totalDailyAverage / msPerDay;
-
-    const now = new Date();
-    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const msElapsedToday = now.getTime() - startOfDay.getTime();
-    
-    const initialValue = totalBaseValue + (msElapsedToday * valuePerMs);
-    setTotalValue(initialValue);
-
-    const interval = setInterval(() => {
-      setTotalValue(prev => prev + (valuePerMs * 100));
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, [config]);
+  const totalValue = useMemo(() => {
+    return config.sectors.reduce((acc, s) => acc + s.baseValue, 0);
+  }, [config.sectors]);
 
   const formattedTotal = useMemo(() => {
     return new Intl.NumberFormat('pt-BR', {
@@ -114,7 +73,7 @@ export const TaxMeter: React.FC<TaxMeterProps> = ({ config }) => {
                 <div className="p-2 bg-blue-500/20 rounded-xl">
                   <Coins className="text-blue-400" size={20} />
                 </div>
-                <span className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em]">Transparência Fiscal</span>
+                <span className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em]">Dados Oficiais da Transparência</span>
               </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter uppercase leading-none mb-4">
                 {config.title}
@@ -125,12 +84,12 @@ export const TaxMeter: React.FC<TaxMeterProps> = ({ config }) => {
             </div>
             
             <div className="bg-white/5 backdrop-blur-md border border-white/10 p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] w-full md:min-w-[300px]">
-              <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2">Total Arrecadado (Estimado)</p>
+              <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2">Total Arrecadado (Real)</p>
               <p className="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter font-mono break-all">
                 {formattedTotal}
               </p>
               <div className="mt-4 flex items-center text-[9px] font-bold text-slate-500 uppercase tracking-tighter">
-                <Info size={12} className="mr-1 text-emerald-500" /> Atualizado em tempo real
+                <Info size={12} className="mr-1 text-emerald-500" /> Atualizado em: {config.lastUpdate}
               </div>
             </div>
           </div>

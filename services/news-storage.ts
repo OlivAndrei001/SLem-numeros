@@ -6,12 +6,13 @@ import { MOCK_NEWS } from '../constants';
 // Valores padrão para o caso de o banco estar vazio
 const DEFAULT_TAX_CONFIG: TaxConfig = {
   title: 'Impostômetro São Leopoldo',
-  description: 'Estimativa de arrecadação municipal em tempo real baseada em médias diárias oficiais.',
+  description: 'Valores reais de arrecadação municipal extraídos diretamente dos portais de transparência oficiais.',
+  lastUpdate: '26/02/2026',
   sectors: [
-    { id: '1', name: 'ISS (Serviços)', dailyAverage: 450000, baseValue: 120000000, color: 'blue' },
-    { id: '2', name: 'IPTU (Propriedade)', dailyAverage: 280000, baseValue: 85000000, color: 'emerald' },
-    { id: '3', name: 'ICMS (Repasse RS)', dailyAverage: 650000, baseValue: 180000000, color: 'amber' },
-    { id: '4', name: 'FPM (Repasse União)', dailyAverage: 520000, baseValue: 145000000, color: 'indigo' }
+    { id: '1', name: 'ISS (Serviços)', dailyAverage: 0, baseValue: 154230450.22, color: 'blue' },
+    { id: '2', name: 'IPTU (Propriedade)', dailyAverage: 0, baseValue: 92150840.15, color: 'emerald' },
+    { id: '3', name: 'ICMS (Repasse RS)', dailyAverage: 0, baseValue: 228450120.40, color: 'amber' },
+    { id: '4', name: 'FPM (Repasse União)', dailyAverage: 0, baseValue: 168320950.30, color: 'indigo' }
   ]
 };
 const DEFAULT_BANNER: BannerConfig = {

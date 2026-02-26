@@ -74,5 +74,6 @@ export interface TaxConfig {
   id?: number;
   title: string;
   description: string;
+  lastUpdate: string;
   sectors: TaxSector[];
 }
