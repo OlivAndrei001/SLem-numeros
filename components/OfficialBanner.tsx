@@ -17,7 +17,7 @@ export const OfficialBanner: React.FC<OfficialBannerProps> = ({ config }) => {
               <BarChart3 size={16} className="text-blue-400" />
               <span className="text-[9px] font-black text-white uppercase tracking-[0.3em]">Insight em Destaque</span>
             </div>
-            <h3 className="text-4xl md:text-5xl font-black text-white leading-[1.1] tracking-tighter">
+            <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-[1.1] tracking-tighter">
               {config.title} <span className="text-blue-400">{config.highlight}</span>
             </h3>
             <p className="text-slate-400 text-lg font-medium leading-relaxed">

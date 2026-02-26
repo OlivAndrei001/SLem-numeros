@@ -59,7 +59,7 @@ const SectorCounter: React.FC<{ sector: TaxSector }> = ({ sector }) => {
         <TrendingUp size={14} className="text-slate-300 group-hover:text-blue-500 transition-colors" />
       </div>
       <div className="space-y-1">
-        <p className="text-2xl font-black text-slate-900 tracking-tighter font-mono">
+        <p className="text-xl sm:text-2xl font-black text-slate-900 tracking-tighter font-mono break-all">
           {formattedValue}
         </p>
         <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Arrecadação Estimada</p>
@@ -116,7 +116,7 @@ export const TaxMeter: React.FC<TaxMeterProps> = ({ config }) => {
                 </div>
                 <span className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em]">Transparência Fiscal</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase leading-none mb-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter uppercase leading-none mb-4">
                 {config.title}
               </h2>
               <p className="text-slate-400 text-sm font-medium leading-relaxed">
@@ -124,9 +124,9 @@ export const TaxMeter: React.FC<TaxMeterProps> = ({ config }) => {
               </p>
             </div>
             
-            <div className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-[2.5rem] min-w-[300px]">
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] w-full md:min-w-[300px]">
               <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2">Total Arrecadado (Estimado)</p>
-              <p className="text-4xl md:text-5xl font-black text-white tracking-tighter font-mono">
+              <p className="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter font-mono break-all">
                 {formattedTotal}
               </p>
               <div className="mt-4 flex items-center text-[9px] font-bold text-slate-500 uppercase tracking-tighter">

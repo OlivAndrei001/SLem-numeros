@@ -104,8 +104,8 @@ const NewsDetail: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex items-baseline space-x-2 mb-6">
-                  <span className="text-4xl font-black text-slate-950 tracking-tighter">{relatedStat.value}</span>
-                  <span className="text-xs font-black text-slate-400 uppercase tracking-widest">{relatedStat.suffix}</span>
+                  <span className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tighter break-all">{relatedStat.value}</span>
+                  <span className="text-[10px] sm:text-xs font-black text-slate-400 uppercase tracking-widest">{relatedStat.suffix}</span>
                 </div>
                 <p className="text-sm text-slate-500 font-medium leading-relaxed mb-8">
                   {relatedStat.description || 'Acompanhe a evolução deste indicador em nosso portal de transparência.'}

@@ -48,8 +48,8 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({ indicators, allN
                 </div>
               </div>
               <div className="flex items-baseline space-x-2">
-                <span className="text-5xl font-black text-slate-950 tracking-tighter group-hover:text-[#004a99] transition-colors">{stat.value}</span>
-                <span className="text-xs font-black text-slate-400 uppercase tracking-widest">{stat.suffix}</span>
+                <span className="text-4xl sm:text-5xl font-black text-slate-950 tracking-tighter group-hover:text-[#004a99] transition-colors break-all">{stat.value}</span>
+                <span className="text-[10px] sm:text-xs font-black text-slate-400 uppercase tracking-widest">{stat.suffix}</span>
               </div>
               <h4 className="text-slate-700 font-bold mt-3 text-sm leading-tight flex items-center justify-between">
                 {stat.label}
@@ -79,12 +79,12 @@ export const StatsDashboard: React.FC<StatsDashboardProps> = ({ indicators, allN
               <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 mb-2 block">
                 Detalhamento: {selectedStat.category}
               </span>
-              <h3 className="text-4xl font-black tracking-tighter uppercase leading-none mb-4">
+              <h3 className="text-3xl sm:text-4xl font-black tracking-tighter uppercase leading-none mb-4">
                 {selectedStat.label}
               </h3>
               <div className="flex items-baseline space-x-3">
-                <span className="text-4xl font-black text-white">{selectedStat.value}</span>
-                <span className="text-sm font-black text-blue-400 uppercase tracking-widest">{selectedStat.suffix}</span>
+                <span className="text-3xl sm:text-4xl font-black text-white">{selectedStat.value}</span>
+                <span className="text-[10px] sm:text-sm font-black text-blue-400 uppercase tracking-widest">{selectedStat.suffix}</span>
               </div>
             </div>
 
