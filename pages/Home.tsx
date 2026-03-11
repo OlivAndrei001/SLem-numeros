@@ -55,10 +55,10 @@ const Home: React.FC = () => {
   return (
     <div className="bg-white min-h-screen">
       <div className="pt-12 pb-8">
-        {banner && <OfficialBanner config={banner} />}
+        {taxConfig && <TaxMeter config={taxConfig} />}
       </div>
 
-      {taxConfig && <TaxMeter config={taxConfig} />}
+      {banner && <OfficialBanner config={banner} />}
 
       <StatsDashboard indicators={stats} allNews={news} />
 
