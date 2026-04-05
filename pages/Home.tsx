@@ -18,20 +18,37 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const loadData = async () => {
+      const timeoutId = setTimeout(() => {
+        if (loading) {
+          console.warn("Carregamento do Supabase demorando demais, forçando inicialização...");
+          setLoading(false);
+        }
+      }, 8000); // 8 segundos de timeout
+
       try {
+        console.log("Iniciando carregamento de dados do Supabase...");
         const [newsData, statsData, bannerData, taxData] = await Promise.all([
-          fetchNews(),
-          fetchStats(),
-          fetchBannerConfig(),
-          fetchTaxConfig()
+          fetchNews().catch(err => { console.error("Erro fetchNews:", err); return []; }),
+          fetchStats().catch(err => { console.error("Erro fetchStats:", err); return []; }),
+          fetchBannerConfig().catch(err => { console.error("Erro fetchBanner:", err); return null; }),
+          fetchTaxConfig().catch(err => { console.error("Erro fetchTax:", err); return null; })
         ]);
+        
+        console.log("Dados carregados com sucesso:", { 
+          news: newsData.length, 
+          stats: statsData.length, 
+          banner: !!bannerData, 
+          tax: !!taxData 
+        });
+
         setNews(newsData);
         setStats(statsData);
         setBanner(bannerData);
         setTaxConfig(taxData);
       } catch (err) {
-        console.error("Erro ao carregar dados do Supabase:", err);
+        console.error("Erro crítico ao carregar dados do Supabase:", err);
       } finally {
+        clearTimeout(timeoutId);
         setLoading(false);
       }
     };
@@ -43,10 +60,19 @@ const Home: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-xs font-black uppercase tracking-widest text-slate-400">Sincronizando com Supabase...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white p-6">
+        <div className="flex flex-col items-center space-y-6">
+          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          <div className="text-center">
+            <h2 className="text-xl font-black text-slate-900 uppercase tracking-tighter mb-2">Sincronizando com Supabase</h2>
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 animate-pulse">Carregando dados oficiais...</p>
+          </div>
+          <button 
+            onClick={() => window.location.reload()}
+            className="mt-4 px-6 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:bg-slate-900 hover:text-white transition-all shadow-sm"
+          >
+            Recarregar Página
+          </button>
         </div>
       </div>
     );

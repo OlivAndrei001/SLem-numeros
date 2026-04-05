@@ -4,7 +4,7 @@ import { Category, NewsArticle, CityIndicator, BannerConfig, GlobalConfig, CityP
 import { formatImageUrl } from '../utils/format';
 import { 
   fetchNews, saveNews, deleteNews, 
-  fetchStats, saveStat, deleteStat, 
+  fetchStats, saveStat, deleteStat, DEFAULT_STATS,
   fetchBannerConfig, saveBannerConfig,
   fetchGlobalConfig, saveGlobalConfig,
   fetchTaxConfig, saveTaxConfig
@@ -120,21 +120,18 @@ const AdminNews: React.FC = () => {
   };
 
   const handleRestoreStats = async () => {
-    if (!confirm('Deseja restaurar os indicadores de exemplo? Eles serão adicionados à sua lista atual.')) return;
+    if (!confirm('Deseja restaurar os indicadores de exemplo? Eles serão salvos no banco de dados para que você possa editá-los.')) return;
     setIsSaving(true);
     try {
-      const examples: CityIndicator[] = [
-        { id: `temp-1`, label: 'Vagas em Creches', value: '4.500', suffix: 'vagas', trend: 'up', category: Category.EDUCATION, color: 'blue', description: 'Total de novas vagas abertas na rede municipal de ensino infantil.', projects: [] },
-        { id: `temp-2`, label: 'Saúde da Família', value: '92', suffix: '%', trend: 'up', category: Category.HEALTH, color: 'emerald', description: 'Cobertura vacinal e atendimentos preventivos nas UBSs.', projects: [] }
-      ];
-      for (const ex of examples) {
+      for (const ex of DEFAULT_STATS) {
         await saveStat(ex);
       }
       const updated = await fetchStats();
       setStatsList(updated);
-      showStatus('Indicadores de exemplo restaurados!');
-    } catch (err) {
-      showStatus('Erro ao restaurar exemplos', 'error');
+      showStatus('Indicadores de exemplo restaurados e salvos no banco!');
+    } catch (err: any) {
+      console.error("Erro ao restaurar exemplos:", err);
+      showStatus(`Erro ao restaurar: ${err.message || 'Verifique a conexão'}`, 'error');
     } finally {
       setIsSaving(false);
     }
@@ -150,8 +147,9 @@ const AdminNews: React.FC = () => {
       setStatsList(updated);
       setStatForm({ label: '', value: '', suffix: '', trend: 'up', category: Category.EDUCATION, color: 'blue', description: '', projects: [] });
       showStatus('Indicador sincronizado!');
-    } catch (err) {
-      showStatus('Erro ao salvar indicador', 'error');
+    } catch (err: any) {
+      console.error("Erro ao salvar indicador:", err);
+      showStatus(`Erro ao salvar: ${err.message || 'Verifique a conexão'}`, 'error');
     } finally {
       setIsSaving(false);
     }
