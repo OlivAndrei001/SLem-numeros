@@ -7,7 +7,8 @@ import {
   fetchStats, saveStat, deleteStat, DEFAULT_STATS,
   fetchBannerConfig, saveBannerConfig,
   fetchGlobalConfig, saveGlobalConfig,
-  fetchTaxConfig, saveTaxConfig
+  fetchTaxConfig, saveTaxConfig,
+  checkSupabaseConnection
 } from '../services/news-storage';
 import { supabase } from '../services/supabase';
 import { 
@@ -29,6 +30,7 @@ const AdminNews: React.FC = () => {
   const [status, setStatus] = useState<{ type: 'success' | 'error', msg: string } | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [isConnected, setIsConnected] = useState<boolean | null>(null);
 
   const [newsForm, setNewsForm] = useState({
     title: '', summary: '', content: '', imageurl: '', 
@@ -41,6 +43,12 @@ const AdminNews: React.FC = () => {
 
   // Verifica se o usuário já está logado ao carregar a página
   useEffect(() => {
+    const checkConn = async () => {
+      const ok = await checkSupabaseConnection();
+      setIsConnected(ok);
+    };
+    checkConn();
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
     });
@@ -267,6 +275,12 @@ const AdminNews: React.FC = () => {
                 <User size={12} className="text-slate-400 mr-2" />
                 <span className="text-[9px] font-bold text-slate-600 truncate max-w-[120px]">{session.user.email}</span>
               </div>
+              <div className={`flex items-center space-x-2 px-3 py-1.5 rounded-full border ${isConnected === true ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : isConnected === false ? 'bg-rose-50 border-rose-100 text-rose-600' : 'bg-slate-50 border-slate-100 text-slate-400'}`}>
+                <div className={`w-2 h-2 rounded-full ${isConnected === true ? 'bg-emerald-500 animate-pulse' : isConnected === false ? 'bg-rose-500' : 'bg-slate-300'}`}></div>
+                <span className="text-[9px] font-black uppercase tracking-widest">
+                  {isConnected === true ? 'Sincronizado' : isConnected === false ? 'Offline' : 'Conectando...'}
+                </span>
+              </div>
               <button onClick={handleLogout} className="lg:hidden p-2 bg-rose-50 text-rose-500 rounded-lg hover:bg-rose-500 hover:text-white transition-all"><LogOut size={16} /></button>
             </div>
           </div>
@@ -277,7 +291,9 @@ const AdminNews: React.FC = () => {
             <button onClick={() => setActiveTab('impostometro')} className={`whitespace-nowrap px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${activeTab === 'impostometro' ? 'bg-[#004a99] text-white shadow-md shadow-blue-900/10' : 'text-slate-400 hover:bg-slate-50'}`}>Impostos</button>
             <button onClick={() => setActiveTab('banner')} className={`whitespace-nowrap px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${activeTab === 'banner' ? 'bg-[#004a99] text-white shadow-md shadow-blue-900/10' : 'text-slate-400 hover:bg-slate-50'}`}>Banner</button>
             <button onClick={() => setActiveTab('identidade')} className={`whitespace-nowrap px-3 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${activeTab === 'identidade' ? 'bg-[#004a99] text-white shadow-md shadow-blue-900/10' : 'text-slate-400 hover:bg-slate-50'}`}>ID Visual</button>
-            <button onClick={handleLogout} className="hidden lg:flex flex-shrink-0 p-2 bg-rose-50 text-rose-500 rounded-lg hover:bg-rose-500 hover:text-white transition-all"><LogOut size={18} /></button>
+            <div className="hidden lg:flex items-center space-x-2">
+              <button onClick={handleLogout} className="flex-shrink-0 p-2 bg-rose-50 text-rose-500 rounded-lg hover:bg-rose-500 hover:text-white transition-all"><LogOut size={18} /></button>
+            </div>
           </nav>
         </div>
       </header>

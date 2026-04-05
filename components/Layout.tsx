@@ -8,22 +8,31 @@ import { formatImageUrl } from '../utils/format';
 
 const Logo: React.FC<{ className?: string, config: GlobalConfig | null }> = ({ className, config }) => {
   const [src, setSrc] = useState(config ? formatImageUrl(config.logourl) : '');
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    if (config) setSrc(formatImageUrl(config.logourl));
+    if (config) {
+      setSrc(formatImageUrl(config.logourl));
+      setHasError(false);
+    }
   }, [config]);
 
   const handleError = () => {
-    const fallback = "https://xvkprodimxdshfekcfmf.supabase.co/storage/v1/object/public/Logo%20do%20site/brasao.png.png";
-    if (src !== fallback) {
-      setSrc(fallback);
-    }
+    setHasError(true);
   };
+
+  if (hasError || !src) {
+    return (
+      <div className={`${className} flex items-center justify-center bg-slate-100 rounded-lg p-1`}>
+        <Globe className="text-[#004a99] w-full h-full" />
+      </div>
+    );
+  }
 
   return (
     <div className="relative flex items-center">
       <img 
-        src={src || "https://xvkprodimxdshfekcfmf.supabase.co/storage/v1/object/public/Logo%20do%20site/brasao.png.png"} 
+        src={src} 
         alt="Logo" 
         className={`${className} transition-opacity duration-300`}
         onError={handleError}

@@ -30,6 +30,21 @@ const DEFAULT_CONFIG: GlobalConfig = {
   cityslogan: 'Em Números'
 };
 
+// --- Conexão ---
+export const checkSupabaseConnection = async (): Promise<boolean> => {
+  try {
+    const { error } = await supabase.from('config').select('id').limit(1);
+    if (error) {
+      console.error("Supabase Connection Error:", error);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("Supabase Network Error:", err);
+    return false;
+  }
+};
+
 // --- Notícias ---
 export const fetchNews = async (): Promise<NewsArticle[]> => {
   try {
